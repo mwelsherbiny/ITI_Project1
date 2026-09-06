@@ -14,16 +14,12 @@ namespace Company.Data
         public DbSet<Department> Departments { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .Build();
-            var connectionString = config.GetConnectionString("DefaultConnection")
-                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var dbPath = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "company.db"
+            );
 
-            var options = optionsBuilder
-                            .UseSqlite(connectionString)
-                            .Options;
+            optionsBuilder.UseSqlite($"Data Source={dbPath}");
         }
     }
 }
